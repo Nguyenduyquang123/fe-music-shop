@@ -1,6 +1,7 @@
 import { Manrope, Hanken_Grotesk } from "next/font/google";
-import "./globals.css";
-import { ConfigProvider } from "antd";
+import "../globals.css";
+import HeaderPage from "@/public/src/components/layout/headerpage";
+import FooterPage from "@/public/src/components/layout/footerpage";
 
 export const manrope = Manrope({
   subsets: ["latin"],
@@ -24,19 +25,11 @@ export default function RootLayout({
       lang="vi"
       className={`${manrope.variable} ${hankenGrotesk.variable}`}
     >
-      <body>
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#FFB800",
-              borderRadius: 8,
-            },
-          }}
-        >
-          
-          {children}
-        </ConfigProvider>
-      </body>
+      <body className="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
+        <HeaderPage />
+       <main className="container"> {children}</main>
+        <FooterPage />
+      </body> 
     </html>
   );
 }
