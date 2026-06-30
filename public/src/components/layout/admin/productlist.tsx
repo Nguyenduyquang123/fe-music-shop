@@ -13,15 +13,51 @@ import {
 import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import type { ColumnsType } from 'antd/es/table';
+import { productService } from '@/public/src/services/product.service';
 
-interface Product {
-    _id: string;
+export interface Product {
+    id: number;
+
+    category: {
+        id: number;
+        name: string;
+        slug: string;
+    } | null;
+
+    brand: {
+        id: number;
+        name: string;
+        slug: string;
+        logo: string | null;
+        description: string | null;
+        is_active: boolean;
+        created_at: string;
+    } | null;
+
     name: string;
-    price: number;
-    images: string[];
-    brand: { _id: string; name: string };
-    shortDescription: string;
-    status: 'active' | 'hidden';
+    slug: string;
+    sku: string;
+
+    thumbnail: string | null;
+
+    short_description: string | null;
+    description: string;
+
+    price: string;
+    sale_price: string | null;
+
+    stock: number;
+
+    is_featured: boolean;
+    is_active: boolean;
+
+    view_count: number;
+
+    meta_title: string | null;
+    meta_description: string | null;
+    meta_keywords: string | null;
+
+    created_at: string;
 }
 
 const ProductListPage = () => {
@@ -30,31 +66,47 @@ const ProductListPage = () => {
     const [searchText, setSearchText] = useState('');
 
     const fetchProducts = async () => {
+
         setLoading(true);
+
         try {
-            const res = await fetch('/api/admin/product');
-            const data = await res.json();
-            setProducts(data.items ?? data);
+
+            const res = await productService.getProducts();
+
+            setProducts(res.data);
+
         } catch {
-            message.error('Không tải được danh sách sản phẩm');
+
+            message.error("Không tải được danh sách sản phẩm");
+
         } finally {
+
             setLoading(false);
+
         }
+
     };
 
     useEffect(() => {
         fetchProducts();
     }, []);
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = async (id: number) => {
+
         try {
-            const res = await fetch(`/api/admin/product/${id}`, { method: 'DELETE' });
-            if (!res.ok) throw new Error();
-            message.success('Đã xóa sản phẩm');
-            setProducts((prev) => prev.filter((p) => p._id !== id));
+
+            await productService.deleteProduct(id);
+
+            message.success("Đã xóa sản phẩm");
+
+            fetchProducts();
+
         } catch {
-            message.error('Xóa sản phẩm thất bại');
+
+            message.error("Xóa thất bại");
+
         }
+
     };
 
     const formatPrice = (price: number) =>
@@ -62,31 +114,51 @@ const ProductListPage = () => {
 
     const columns: ColumnsType<Product> = [
         {
-            title: 'Ảnh',
-            dataIndex: 'images',
+            title: "Ảnh",
+            dataIndex: "thumbnail",
             width: 80,
-            render: (images: string[]) => (
+            render: (thumbnail: string | null) => (
                 <Image
-                    src={images?.[0]}
-                    alt="product"
-                    width={56}
-                    height={56}
-                    style={{ objectFit: 'cover', borderRadius: 8 }}
-                    fallback="/images/no-image.png"
+                    src={thumbnail ?? "/images/no-image.png"}
+                    width={60}
+                    height={60}
+                    style={{
+                        objectFit: "cover",
+                        borderRadius: 8,
+                    }}
                 />
             ),
         },
         {
-            title: 'Tên sản phẩm',
-            dataIndex: 'name',
-            render: (name: string, record) => (
-                <div>
-                    <div style={{ fontWeight: 500 }}>{name}</div>
-                    <div style={{ fontSize: 12, color: '#8c8c8c' }}>
-                        {record.shortDescription}
+            title: "Tên sản phẩm",
+            dataIndex: "name",
+            render: (_, record) => (
+                <>
+                    <div style={{ fontWeight: 600 }}>
+                        {record.name}
                     </div>
-                </div>
+
+                    <div
+                        style={{
+                            color: "#888",
+                            fontSize: 12,
+                        }}
+                    >
+                        {record.short_description}
+                    </div>
+                </>
             ),
+        },
+        {
+            title: "SKU",
+            dataIndex: "sku",
+            width: 120,
+        },
+        {
+            title: 'Danh mục',
+            dataIndex: 'category',
+            width: 200,
+            render: (category: any) => <Tag color="blue">{category?.name}</Tag>,
         },
         {
             title: 'Thương hiệu',
@@ -99,14 +171,24 @@ const ProductListPage = () => {
             dataIndex: 'price',
             width: 150,
             sorter: (a, b) => a.price - b.price,
-            render: (price: number) => formatPrice(price),
+            render: (_, record) => (
+                <>
+                    <div>{formatPrice(record.price)}</div>
+
+                    {record.sale_price && (
+                        <div style={{ color: "red" }}>
+                            {formatPrice(record.sale_price)}
+                        </div>
+                    )}
+                </>
+            )
         },
         {
             title: 'Trạng thái',
-            dataIndex: 'status',
+            dataIndex: 'is_active',
             width: 120,
-            render: (status: string) =>
-                status === 'active' ? (
+            render: (is_active: boolean) =>
+                is_active === true ? (
                     <Tag color="green">Đang bán</Tag>
                 ) : (
                     <Tag color="default">Đã ẩn</Tag>
@@ -117,13 +199,13 @@ const ProductListPage = () => {
             width: 120,
             render: (_, record) => (
                 <Space>
-                    <Link href={`/dashboard/product/edit/${record._id}`}>
+                    <Link href={`/dashboard/product/edit/${record.id}`}>
                         <Button icon={<EditOutlined />} size="small" />
                     </Link>
                     <Popconfirm
                         title="Xóa sản phẩm này?"
                         description="Hành động này không thể hoàn tác."
-                        onConfirm={() => handleDelete(record._id)}
+                        onConfirm={() => handleDelete(record.id)}
                         okText="Xóa"
                         cancelText="Hủy"
                         okButtonProps={{ danger: true }}
@@ -167,7 +249,7 @@ const ProductListPage = () => {
             />
 
             <Table
-                rowKey="_id"
+                rowKey="id"
                 columns={columns}
                 dataSource={filteredProducts}
                 loading={loading}

@@ -17,7 +17,7 @@ const HeaderPage = () => {
                             className="object-cover rounded-[50%]"
                         />
                         <div className="text-headline-md font-headline-md font-bold text-primary">
-                            Âm Nhạc Camus
+                            Camus music
                         </div>
                     </div>
                     <NavigationPage />

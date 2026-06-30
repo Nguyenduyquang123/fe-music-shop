@@ -21,9 +21,9 @@ import {
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import type { RcFile, UploadFile } from 'antd/es/upload/interface';
-import { categoryService } from '@/public/src/services/category.service';
+import { brandService } from '@/public/src/services/brand.service';
 
-interface Category {
+interface Brand {
     id: number;
     name: string;
     slug: string;
@@ -32,19 +32,7 @@ interface Category {
     is_active: 1 | 0;
 }
 
-const beforeUploadImage = (file: RcFile) => {
-    const isImage = file.type.startsWith('image/');
-    if (!isImage) {
-        message.error('Chỉ chấp nhận file ảnh!');
-        return Upload.LIST_IGNORE;
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-        message.error('Ảnh phải nhỏ hơn 2MB!');
-        return Upload.LIST_IGNORE;
-    }
-    return false;
-};
+
 
 const slugify = (text: string) =>
     text
@@ -56,13 +44,13 @@ const slugify = (text: string) =>
         .trim()
         .replace(/\s+/g, '-');
 
-const CategoryPage = () => {
-    const [categories, setCategories] = useState<Category[]>([]);
+const BrandPage = () => {
+    const [categories, setCategories] = useState<Brand[]>([]);
     const [loading, setLoading] = useState(false);
     const [searchText, setSearchText] = useState('');
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+    const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [submitting, setSubmitting] = useState(false);
     const [form] = Form.useForm();
@@ -73,14 +61,14 @@ const CategoryPage = () => {
 
         try {
 
-            const res = await categoryService.getCategories();
+            const res = await brandService.getBrands();
 
             setCategories(res?.data);
 
 
         } catch {
 
-            message.error("Không tải được danh mục");
+            message.error("Không tải được thương hiệu");
 
         } finally {
 
@@ -94,21 +82,21 @@ const CategoryPage = () => {
     }, []);
 
     const openAddModal = () => {
-        setEditingCategory(null);
+        setEditingBrand(null);
         form.resetFields();
         setFileList([]);
         setModalOpen(true);
     };
 
-    const openEditModal = async (category: Category) => {
+    const openEditModal = async (brand: Brand) => {
 
         try {
 
-            const res = await categoryService.getCategory(category.id);
+            const res = await brandService.getBrand(brand.id);
 
             const data = res?.data;
 
-            setEditingCategory(data);
+            setEditingBrand(data);
 
             form.setFieldsValue({
                 name: data?.name,
@@ -134,7 +122,7 @@ const CategoryPage = () => {
 
         } catch {
 
-            message.error("Không lấy được thông tin danh mục");
+            message.error("Không lấy được thông tin thương hiệu");
 
         }
 
@@ -143,7 +131,7 @@ const CategoryPage = () => {
 
         try {
 
-            await categoryService.deleteCategory(id);
+            await brandService.deleteBrand(id);
 
             message.success("Xóa thành công");
 
@@ -183,10 +171,10 @@ const CategoryPage = () => {
                 formData.append("image", file as RcFile);
             }
 
-            if (editingCategory) {
+            if (editingBrand) {
 
-                await categoryService.updateCategory(
-                    editingCategory.id,
+                await brandService.updateBrand(
+                    editingBrand.id,
                     formData
                 );
 
@@ -194,7 +182,7 @@ const CategoryPage = () => {
 
             } else {
 
-                await categoryService.createCategory(formData);
+                await brandService.createBrand(formData);
 
                 message.success("Thêm thành công");
 
@@ -216,24 +204,9 @@ const CategoryPage = () => {
 
     };
 
-    const columns: ColumnsType<Category> = [
+    const columns: ColumnsType<Brand> = [
         {
-            title: 'Ảnh',
-            dataIndex: 'image',
-            width: 70,
-            render: (image: string) => (
-                <Image
-                    src={image}
-                    alt="category"
-                    width={48}
-                    height={48}
-                    style={{ objectFit: 'cover', borderRadius: 8 }}
-                    fallback="/images/no-image.png"
-                />
-            ),
-        },
-        {
-            title: 'Tên danh mục',
+            title: 'Tên thương hiệu',
             dataIndex: 'name',
             render: (name: string, record) => (
                 <div>
@@ -241,12 +214,6 @@ const CategoryPage = () => {
                     <div style={{ fontSize: 12, color: '#8c8c8c' }}>/{record.slug}</div>
                 </div>
             ),
-        },
-        {
-            title: 'Số sản phẩm',
-            dataIndex: 'productCount',
-            width: 130,
-            render: (count: number) => <Tag color="blue">{count ?? 0} sản phẩm</Tag>,
         },
         {
             title: "Trạng thái",
@@ -269,8 +236,8 @@ const CategoryPage = () => {
                         onClick={() => openEditModal(record)}
                     />
                     <Popconfirm
-                        title="Xóa danh mục này?"
-                        description="Sản phẩm thuộc danh mục này sẽ không bị xóa nhưng mất liên kết."
+                        title="Xóa thương hiệu này?"
+                        description="Sản phẩm thuộc thương hiệu này sẽ không bị xóa nhưng mất liên kết."
                         onConfirm={() => handleDelete(record.id)}
                         okText="Xóa"
                         cancelText="Hủy"
@@ -297,14 +264,14 @@ const CategoryPage = () => {
                     marginBottom: 20,
                 }}
             >
-                <h2 style={{ margin: 0 }}>Quản lý danh mục</h2>
+                <h2 style={{ margin: 0 }}>Quản lý thương hiệu</h2>
                 <Button type="primary" icon={<PlusOutlined />} onClick={openAddModal}>
-                    Thêm danh mục
+                    Thêm thương hiệu
                 </Button>
             </div>
 
             <Input
-                placeholder="Tìm kiếm theo tên danh mục..."
+                placeholder="Tìm kiếm theo tên thương hiệu..."
                 prefix={<SearchOutlined />}
                 style={{ marginBottom: 16, maxWidth: 320 }}
                 value={searchText}
@@ -321,7 +288,7 @@ const CategoryPage = () => {
             />
 
             <Modal
-                title={editingCategory ? 'Sửa danh mục' : 'Thêm danh mục mới'}
+                title={editingBrand ? 'Sửa thương hiệu' : 'Thêm thương hiệu mới'}
                 open={modalOpen}
                 onCancel={() => setModalOpen(false)}
                 footer={null}
@@ -330,38 +297,23 @@ const CategoryPage = () => {
                 <Form form={form} layout="vertical" onFinish={handleSubmit}>
                     <Form.Item
                         name="name"
-                        label="Tên danh mục"
-                        rules={[{ required: true, message: 'Vui lòng nhập tên danh mục' }]}
+                        label="Tên thương hiệu"
+                        rules={[{ required: true, message: 'Vui lòng nhập tên thương hiệu' }]}
                     >
-                        <Input placeholder="Đàn dây, Bộ gõ, Nhạc cụ hơi..." />
+                        <Input placeholder="yamaha, Casio..." />
                     </Form.Item>
 
                     <Form.Item name="description" label="Mô tả ngắn">
-                        <Input.TextArea rows={3} placeholder="Mô tả ngắn về danh mục này" />
+                        <Input.TextArea rows={3} placeholder="Mô tả ngắn về thương hiệu này" />
                     </Form.Item>
 
-                    <Form.Item label="Ảnh đại diện danh mục">
-                        <Upload
-                            listType="picture-card"
-                            fileList={fileList}
-                            beforeUpload={beforeUploadImage}
-                            onChange={({ fileList: newList }) => setFileList(newList.slice(-1))}
-                            maxCount={1}
-                        >
-                            {fileList.length >= 1 ? null : (
-                                <div>
-                                    <PlusOutlined />
-                                    <div style={{ marginTop: 8 }}>Tải ảnh</div>
-                                </div>
-                            )}
-                        </Upload>
-                    </Form.Item>
+                 
 
                     <Form.Item style={{ marginTop: 24, marginBottom: 0, textAlign: 'right' }}>
                         <Space>
                             <Button onClick={() => setModalOpen(false)}>Hủy</Button>
                             <Button type="primary" htmlType="submit" loading={submitting}>
-                                {editingCategory ? 'Cập nhật' : 'Thêm danh mục'}
+                                {editingBrand ? 'Cập nhật' : 'Thêm thương hiệu'}
                             </Button>
                         </Space>
                     </Form.Item>
@@ -371,4 +323,4 @@ const CategoryPage = () => {
     );
 };
 
-export default CategoryPage;
+export default BrandPage;

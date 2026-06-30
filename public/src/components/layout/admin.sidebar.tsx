@@ -16,9 +16,10 @@ import {
 } from '@ant-design/icons';
 import React, { useContext } from 'react';
 import { AdminContext } from "@/public/src/library/admin.context";
-import { Avatar, type MenuProps } from 'antd';
+import { Avatar, Image, type MenuProps } from 'antd';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import logo from "@/public/src/assets/image/logp.jpg";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -26,7 +27,7 @@ const AdminSideBar = (props: any) => {
     const { Sider } = Layout;
     const { collapseMenu } = useContext(AdminContext)!;
     const pathname = usePathname();
-    const avatarUrl = props.session.user.avatar ?? 'Admin';
+
 
     const items: MenuItem[] = [
         {
@@ -56,6 +57,11 @@ const AdminSideBar = (props: any) => {
                 {
                     key: "products-category",
                     label: <Link href="/dashboard/product/category">Danh mục</Link>,
+                    icon: <AppstoreOutlined />,
+                },
+                {
+                    key: "products-brands",
+                    label: <Link href="/dashboard/product/brands">Thương hiệu</Link>,
                     icon: <AppstoreOutlined />,
                 },
             ],
@@ -126,6 +132,7 @@ const AdminSideBar = (props: any) => {
         if (pathname.startsWith("/dashboard/user")) return "users";
         if (pathname.startsWith("/dashboard/product/add")) return "products-add";
         if (pathname.startsWith("/dashboard/product/category")) return "products-category";
+        if (pathname.startsWith("/dashboard/product/brands")) return "products-brands";
         if (pathname.startsWith("/dashboard/product")) return "products-all";
         if (pathname.startsWith("/dashboard/blog/add")) return "blog-add";
         if (pathname.startsWith("/dashboard/blog/category")) return "blog-category";
@@ -159,10 +166,12 @@ const AdminSideBar = (props: any) => {
                     overflow: "hidden",
                 }}
             >
-                <Avatar
-                    src={avatarUrl ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${avatarUrl}` : undefined}
+                <Image
+                    src={logo.src}
                     alt="Logo"
-                    size={56}
+                    width={66}
+                    height={66}
+                    className="object-cover rounded-[50%]"
                 />
                 {!collapseMenu && (
                     <span
