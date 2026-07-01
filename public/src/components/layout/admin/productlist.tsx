@@ -14,51 +14,7 @@ import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant
 import Link from 'next/link';
 import type { ColumnsType } from 'antd/es/table';
 import { productService } from '@/public/src/services/product.service';
-
-export interface Product {
-    id: number;
-
-    category: {
-        id: number;
-        name: string;
-        slug: string;
-    } | null;
-
-    brand: {
-        id: number;
-        name: string;
-        slug: string;
-        logo: string | null;
-        description: string | null;
-        is_active: boolean;
-        created_at: string;
-    } | null;
-
-    name: string;
-    slug: string;
-    sku: string;
-
-    thumbnail: string | null;
-
-    short_description: string | null;
-    description: string;
-
-    price: string;
-    sale_price: string | null;
-
-    stock: number;
-
-    is_featured: boolean;
-    is_active: boolean;
-
-    view_count: number;
-
-    meta_title: string | null;
-    meta_description: string | null;
-    meta_keywords: string | null;
-
-    created_at: string;
-}
+import { Product } from '@/public/src/types/type';
 
 const ProductListPage = () => {
     const [products, setProducts] = useState<Product[]>([]);
@@ -71,7 +27,7 @@ const ProductListPage = () => {
 
         try {
 
-            const res = await productService.getProducts();
+            const res = await productService.getProducts() as { data: Product[] };
 
             setProducts(res.data);
 
@@ -119,7 +75,7 @@ const ProductListPage = () => {
             width: 80,
             render: (thumbnail: string | null) => (
                 <Image
-                    src={thumbnail ?? "/images/no-image.png"}
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${thumbnail}`}
                     width={60}
                     height={60}
                     style={{
@@ -136,15 +92,6 @@ const ProductListPage = () => {
                 <>
                     <div style={{ fontWeight: 600 }}>
                         {record.name}
-                    </div>
-
-                    <div
-                        style={{
-                            color: "#888",
-                            fontSize: 12,
-                        }}
-                    >
-                        {record.short_description}
                     </div>
                 </>
             ),

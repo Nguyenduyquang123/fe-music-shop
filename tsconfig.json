@@ -36,7 +36,7 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts",
     "public/src/components/layout/product"
-  ],
+, "public/src/hook/useProductDetail.js"  ],
   "exclude": [
     "node_modules"
   ]

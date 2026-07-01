@@ -1,6 +1,5 @@
 import { sendRequest } from "@/public/src/library/api";
 
-
 export const productService = {
 
     getProducts() {
@@ -39,5 +38,20 @@ export const productService = {
             method: "DELETE",
         });
     },
+    getBrands() {
+        return sendRequest({
+            url: "/api/auth/brands",
+            method: "GET",
+        });
+    },
+
+    getCategories() {
+        return sendRequest({
+            url: "/api/auth/categories",
+            method: "GET",
+        });
+    },
+    
 
 };
+

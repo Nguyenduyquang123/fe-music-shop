@@ -22,6 +22,7 @@ import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadProps } from 'antd/es/upload/interface';
 import { useEffect, useState } from 'react';
 import { userService } from '@/public/src/services/user.service';
+import { profile } from '@/public/src/types/type'
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -86,7 +87,7 @@ const Profile = () => {
   const loadProfile = async () => {
     try {
 
-      const res = await userService.getProfile();
+      const res = await userService.getProfile() as { data: profile };
 
       profileForm.setFieldsValue({
         full_name: res.data.full_name,
