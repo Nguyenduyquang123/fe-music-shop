@@ -320,7 +320,7 @@ const ProductDetailPage = () => {
           <div className="rounded-xl overflow-hidden border border-outline-variant/20">
             {product.specifications.map((spec, i) => (
               <div
-                key={spec.id ?? i}
+                key={i}
                 className={`flex justify-between px-6 py-4 text-body-md ${i % 2 === 0 ? 'bg-surface-container' : 'bg-surface-container-low'
                   }`}
               >

@@ -61,7 +61,11 @@ const ProductGrid = ({ products, loading }: Props) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
       {products.map((product) => {
-        const badge = product.badge ? BADGE_MAP[product.badge] : null
+     
+        type BadgeKey = keyof typeof BADGE_MAP;
+        const badge = product.badge && product.badge in BADGE_MAP 
+            ? BADGE_MAP[product.badge as BadgeKey] 
+            : null;
         const price = toNumber(product.price)
         const salePrice = product.sale_price ? toNumber(product.sale_price) : null
         const hasDiscount = salePrice !== null && salePrice < price

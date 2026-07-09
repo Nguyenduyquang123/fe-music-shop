@@ -105,7 +105,7 @@ const ProductFormPage = () => {
                     name: data.name,
                     sku: data.sku,
                     price: data.price,
-                    sale_price: data.sale_price,
+                    sale_price: data.sale_price ?? undefined,
                     stock: data.stock,
                     brand_id: data.brand?.id,
                     category_id: data.category?.id,

@@ -2,9 +2,10 @@
 export interface Product {
     id: number;
     name: string;
+    slug: string;
     sku: string;
-     price: number        // API trả về string
-    sale_price?: number
+    price: number;        // API trả về string
+    sale_price?: number | null 
     stock: number;
     brand: Brand;
     category: Category;
@@ -12,8 +13,12 @@ export interface Product {
     description: string;
     images: { id: number; image_url: string }[];
     thumbnail: string;
-    specifications: { name: string; value: string }[];
+    specifications: { id?: number; name: string; value: string }[];
     is_active?: boolean | number;
+    is_featured?: boolean | number;
+    view_count?: number;
+    badge?: string | null;
+    rating?: number | null;
 }
 
 export interface profile{

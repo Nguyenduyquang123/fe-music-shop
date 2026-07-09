@@ -102,7 +102,7 @@ const RichTextEditor = ({ value = '', onChange }: Props) => {
         if (!editor) return
         const current = editor.getHTML()
         if (value !== current) {
-            editor.commands.setContent(value ?? '', false)
+            editor.commands.setContent(value ?? '', { parseOptions: { preserveWhitespace: true } })
         }
     }, [value, editor])
 
