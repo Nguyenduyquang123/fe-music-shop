@@ -35,10 +35,16 @@ const AdminSideBar = (props: any) => {
             label: <Link href="/dashboard">Tổng quan</Link>,
             icon: <DashboardOutlined />,
         },
+
         {
             key: "users",
             label: <Link href="/dashboard/user">Người dùng</Link>,
             icon: <TeamOutlined />,
+        },
+        {
+            key: "inquiries",
+            label: <Link href="/dashboard/inquiries">Yêu cầu tư vấn</Link>,
+            icon: <FormOutlined />,
         },
         {
             key: "products",
@@ -88,6 +94,11 @@ const AdminSideBar = (props: any) => {
             ],
         },
         {
+            key: "Inventory",
+            label: <Link href="/dashboard/Inventory">Kho hàng</Link>,
+            icon: <AppstoreOutlined />,
+        },
+        {
             type: "divider",
         },
         {
@@ -130,6 +141,7 @@ const AdminSideBar = (props: any) => {
     const getSelectedKey = () => {
         if (!pathname) return "dashboard";
         if (pathname.startsWith("/dashboard/user")) return "users";
+        if (pathname.startsWith("/dashboard/inquiries")) return "inquiries";
         if (pathname.startsWith("/dashboard/product/add")) return "products-add";
         if (pathname.startsWith("/dashboard/product/category")) return "products-category";
         if (pathname.startsWith("/dashboard/product/brands")) return "products-brands";

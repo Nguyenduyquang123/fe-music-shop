@@ -7,7 +7,7 @@ export interface IRequest {
   headers?: HeadersInit;
 }
 
-export async function sendRequest<T>({
+export async function sendRequest<T = any>({
   url,
   method = "GET",
   body,

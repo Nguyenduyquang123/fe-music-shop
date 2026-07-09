@@ -1,155 +1,175 @@
 @import "tailwindcss";
 
-* {
-  margin: 0;
-}
-
 @theme {
-  --font-heading: "Manrope", sans-serif;
-  --font-body: "Hanken Grotesk", sans-serif;
-
-  --color-primary: #ffdca1;
-
-  --color-primary-container: #ffb800;
-
-  --color-primary-fixed: #ffdea8;
-
-  --color-primary-fixed-dim: #ffba20;
-
-
-
-  --color-secondary: #c8c6c5;
-
-  --color-secondary-container: #4a4949;
-
-  --color-secondary-fixed: #e5e2e1;
-
-  --color-secondary-fixed-dim: #c8c6c5;
-
-
-
-  --color-tertiary: #e0e1e1;
-
-  --color-tertiary-container: #c4c5c5;
-
-  --color-tertiary-fixed: #e2e2e2;
-
-  --color-tertiary-fixed-dim: #c6c6c7;
-
-
-
-  --color-background: #131313;
-
-  --color-surface: #131313;
-
-  --color-surface-dim: #131313;
-
-  --color-surface-bright: #393939;
-
-
-
-  --color-surface-container-lowest: #0e0e0e;
-
-  --color-surface-container-low: #1b1b1c;
-
-  --color-surface-container: #202020;
-
-  --color-surface-container-high: #2a2a2a;
-
-  --color-surface-container-highest: #353535;
-
-
-
-  --color-surface-variant: #353535;
-
-
-
-  --color-on-primary: #412d00;
-
-  --color-on-primary-container: #6b4c00;
-
-  --color-on-primary-fixed: #271900;
-
-  --color-on-primary-fixed-variant: #5e4200;
-
-
-
-  --color-on-secondary: #313030;
-
-  --color-on-secondary-container: #bab8b7;
-
-  --color-on-secondary-fixed: #1c1b1b;
-
-  --color-on-secondary-fixed-variant: #474646;
-
-
-
-  --color-on-tertiary: #2f3131;
-
-  --color-on-tertiary-container: #505252;
-
-  --color-on-tertiary-fixed: #1a1c1c;
-
-  --color-on-tertiary-fixed-variant: #454747;
-
-
-
-  --color-on-background: #e5e2e1;
-
-  --color-on-surface: #e5e2e1;
-
-  --color-on-surface-variant: #d5c4ab;
-
-
-
-  --color-outline: #9e8f78;
-
-  --color-outline-variant: #514532;
-
-
-
-  --color-error: #ffb4ab;
-
-  --color-error-container: #93000a;
-
-  --color-on-error: #690005;
-
-  --color-on-error-container: #ffdad6;
-
-
-
-  --color-inverse-primary: #7c5800;
-
-  --color-inverse-surface: #e5e2e1;
-
-  --color-inverse-on-surface: #303030;
-
-
-
-  --color-surface-tint: #ffba20;
-
-  /* Radius */
-
-  --radius: 2px;
-  --radius-lg: 4px;
-  --radius-xl: 8px;
-  --radius-full: 12px;
-
-  /* Spacing */
-
-  --spacing-base: 8px;
+  /* --- Primary: Vàng --- */
+  --color-primary: #f5b800;
+  --color-primary-container: #ffd600;
+  --color-primary-fixed: #fff0b3;
+  --color-primary-fixed-dim: #f5b800;
+
+  /* --- Secondary: Xám trung tính --- */
+  --color-secondary: #555555;
+  --color-secondary-container: #e0e0e0;
+  --color-secondary-fixed: #f0f0f0;
+  --color-secondary-fixed-dim: #cccccc;
+
+  /* --- Tertiary --- */
+  --color-tertiary: #888888;
+  --color-tertiary-container: #eeeeee;
+  --color-tertiary-fixed: #f5f5f5;
+  --color-tertiary-fixed-dim: #dddddd;
+
+  /* --- Background & Surface: Trắng --- */
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-dim: #f5f5f5;
+  --color-surface-bright: #ffffff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f9f9f9;
+  --color-surface-container: #f3f3f3;
+  --color-surface-container-high: #ebebeb;
+  --color-surface-container-highest: #e0e0e0;
+  --color-surface-variant: #e8e8e8;
+
+  /* --- On Primary: Đen (chữ trên nền vàng) --- */
+  --color-on-primary: #000000;
+  --color-on-primary-container: #1a1a00;
+  --color-on-primary-fixed: #000000;
+  --color-on-primary-fixed-variant: #2a2a00;
+
+  /* --- On Secondary --- */
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #111111;
+  --color-on-secondary-fixed: #111111;
+  --color-on-secondary-fixed-variant: #333333;
+
+  /* --- On Tertiary --- */
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #111111;
+  --color-on-tertiary-fixed: #111111;
+  --color-on-tertiary-fixed-variant: #333333;
+
+  /* --- On Surface & Background: Đen --- */
+  --color-on-background: #111111;
+  --color-on-surface: #111111;
+  --color-on-surface-variant: #000;
+  --color-outline: #999999;
+  --color-outline-variant: #dddddd;
+
+  /* --- Error --- */
+  --color-error: #d32f2f;
+  --color-error-container: #ffcdd2;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #b71c1c;
+
+  /* --- Inverse --- */
+  --color-inverse-primary: #c99a00;
+  --color-inverse-surface: #111111;
+  --color-inverse-on-surface: #f5f5f5;
+  --color-surface-tint: #f5b800;
+
+  /* --- Spacing --- */
   --spacing-gutter: 24px;
   --spacing-margin-desktop: 40px;
   --spacing-margin-mobile: 16px;
   --spacing-container-max: 1280px;
-  --container-7xl: 1280px;
+  --spacing-base: 8px;
 
+  /* --- Border Radius --- */
+  --radius-default: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
+
+  /* --- Font Families --- */
+  --font-manrope: "Manrope", sans-serif;
+  --font-hanken: "Hanken Grotesk", sans-serif;
 }
 
+/* --- Utilities & Custom Classes --- */
+@layer utilities {
+  .font-headline-lg { font-family: var(--font-manrope); font-size: 32px; font-weight: 700; line-height: 1.2; }
+  .font-headline-md { font-family: var(--font-manrope); font-size: 24px; font-weight: 600; line-height: 1.3; }
+  .font-display-lg  { font-family: var(--font-manrope); font-size: 48px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+  .font-body-lg     { font-family: var(--font-hanken); font-size: 18px; font-weight: 400; line-height: 1.6; }
+  .font-label-sm    { font-family: var(--font-hanken); font-size: 14px; font-weight: 600; line-height: 1.2; }
+  .font-body-md     { font-family: var(--font-hanken); font-size: 16px; font-weight: 400; line-height: 1.6; }
+
+  /* Button vàng chủ đạo */
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    background-color: var(--color-primary-container);
+    box-shadow: 0 4px 16px rgba(245, 184, 0, 0.35);
+  }
+
+  .metallic-sheen {
+    background: linear-gradient(90deg, #f5b800 0%, #ffd600 50%, #f5b800 100%);
+    background-size: 200% 100%;
+    transition: background-position 0.4s;
+  }
+  .metallic-sheen:hover {
+    background-position: 100% 0;
+  }
+
+  .accent-gradient {
+    background: linear-gradient(45deg, #f5b800 0%, #ffd600 50%, #f5b800 100%);
+    background-size: 200% 200%;
+  }
+  .accent-gradient:hover {
+    animation: metallicSheen 1.5s linear infinite;
+  }
+
+  @keyframes metallicSheen {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
+  /* Glow vàng cho hover card */
+  .accent-glow:hover {
+    box-shadow: 0 8px 32px rgba(245, 184, 0, 0.2);
+  }
+  .amber-glow:hover {
+    box-shadow: 0 8px 24px rgba(245, 184, 0, 0.2);
+  }
+  .concert-glow:hover {
+    box-shadow: 0 8px 32px rgba(245, 184, 0, 0.15);
+  }
+  .product-card-glow:hover {
+    box-shadow: 0 8px 24px rgba(245, 184, 0, 0.12);
+  }
+
+  .glass-card {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(245, 184, 0, 0.15);
+  }
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  scroll-behavior: smooth;
+}
 
 .container {
   margin-inline: auto;
   width: 100%;
-  max-width: 1280px;
-  padding-inline: 40px;
+  max-width: var(--spacing-container-max);
+  padding-inline: var(--spacing-margin-desktop);
+}
+
+.hero-section {
+  width: 100vw;
+  position: relative;
+  left: 49.29%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }

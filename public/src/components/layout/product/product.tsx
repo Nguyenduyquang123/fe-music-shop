@@ -39,21 +39,21 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        
-          clientProductService.getProducts({ page: 1 }).then((res) => {
-            console.log('API raw response:', res)
-            console.log('products array:', res.data)
-            console.log('total:', res.meta?.total)
-          })
 
-          const [catRes, brandRes] = await Promise.all([
+        clientProductService.getProducts({ page: 1 }).then((res) => {
+          console.log('API raw response:', res)
+          console.log('products array:', res.data)
+          console.log('total:', res.meta?.total)
+        })
+
+        const [catRes, brandRes] = await Promise.all([
           clientProductService.getCategories(),
           clientProductService.getBrands(),
         ])
         setCategories(catRes.data ?? catRes.items ?? catRes)
         setBrands(brandRes.data ?? brandRes.items ?? brandRes)
 
-      
+
       } catch {
         // giữ array rỗng, không block UI
       }
@@ -77,8 +77,9 @@ const ProductPage = () => {
 
       // Response thực tế: { data: [...], meta: { total, current_page, last_page } }
       const rawList = res.data ?? res.items ?? []
-      setProducts(rawList as Product[])
-      setTotal(res.meta?.total ?? res.total ?? 0)
+
+      const publishedOnly = (rawList as Product[]).filter(item => item.is_active === true);
+      setProducts(publishedOnly);
     } catch (err) {
       console.error('fetchProducts error:', err)
       setProducts([])

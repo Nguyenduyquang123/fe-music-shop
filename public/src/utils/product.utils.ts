@@ -8,43 +8,45 @@ export const toNumber = (value: string | number | null | undefined): number => {
 }
 
 export const toImageUrl = (path: string | null | undefined): string => {
-    if (!path) return '/images/no-image.png'
+    if (!path) return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNjQiIGZpbGw9IiNkOWQ5ZDkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn5K3PC90ZXh0Pjwvc3ZnPg=='
     if (path.startsWith('http')) return path
     return `${BASE_URL}/storage/${path}`
 }
 
-// Normalize 1 product từ API response về shape chuẩn dùng trong UI
+
 export const normalizeProduct = (raw: any): Product => ({
-    ...raw,
+    id: raw.id,
+    name: raw.name,
+    slug: raw.slug,
+    sku: raw.sku,
+    stock: raw.stock,
+    short_description: raw.short_description,
+    description: raw.description,
+    is_active: raw.is_active,
+    is_featured: raw.is_featured,
+    view_count: raw.view_count,
+    badge: raw.badge ?? null,
+    rating: raw.rating ?? null,
+    brand: raw.brand,
+    category: raw.category,
     price: toNumber(raw.price),
     sale_price: raw.sale_price ? toNumber(raw.sale_price) : null,
     thumbnail: toImageUrl(raw.thumbnail),
     images: (raw.images ?? []).map((img: any) => ({
         id: img.id,
-        image_url: img.image_url.startsWith('http')
-            ? img.image_url
-            : `${BASE_URL}/storage/${img.image_url}`,
+        image_url: toImageUrl(img.image_url),
+    })),
+    specifications: (raw.specifications ?? []).map((s: any) => ({
+        id: s.id,
+        name: s.name,
+        value: s.value,
     })),
 })
 
-export const normalizeProducts = (products: any[]): Product[] => {
-  return products.map((item) => ({
-    id: item.id,
-    name: item.name,
-    slug: item.slug,
-    price: Number(item.price),
-    sale_price: item.sale_price ? Number(item.sale_price) : null,
-    thumbnail: item.thumbnail,
-    stock: item.stock,
-    sku: item.sku,
+export const normalizeProducts = (list: any[]): Product[] =>
+    list.map(normalizeProduct)
 
-    brand: item.brand,
-    category: item.category,
-
-    images: item.images ?? [],
-    specifications: item.specifications ?? [],
-
-    short_description: item.short_description,
-    description: item.description,
-  }));
-};
+export const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.onerror = null
+    e.currentTarget.src = toImageUrl(null) // trả về placeholder
+}

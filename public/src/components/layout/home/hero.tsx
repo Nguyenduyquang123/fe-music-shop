@@ -1,36 +1,102 @@
+'use client'
+import { useEffect, useState } from 'react'
+import { Button, Skeleton } from 'antd'
+import Link from 'next/link'
+import { clientContentService } from '@/public/src/services/client/client.content.service'
+
+const DEFAULT_BANNER = {
+    title: 'Khám Phá Thế Giới Âm Nhạc!',
+    subtitle: 'Đa dạng nhạc cụ chất lượng, giá tốt cho mọi đam mê âm nhạc. Từ những chiếc guitar thủ công đến những bộ trống uy lực nhất.',
+    image: 'https://scontent.fvii2-4.fna.fbcdn.net/v/t39.30808-6/531256648_1502756667810938_5109795937734930495_n.jpg?stp=dst-jpg_tt6&cstp=mx1640x924&ctp=s1640x924&_nc_cat=104&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeE0ZV9cJH-I_6xJatJBP5oqaIWcYzDsFj5ohZxjMOwWPqm-HiZc538_60gTg1Lsbg6XEy11qIyfHHG7uYrs1nKB&_nc_ohc=y4tbhmug4iEQ7kNvwGDaz3u&_nc_oc=AdoC3jei9opUXElVCrHZ95CRhDoLZqnAh2Nx6lgjBGIGhVmMLP3bmdXBXil3jSHujFDo00znstrBLfgnffF8Mc_M&_nc_zt=23&_nc_ht=scontent.fvii2-4.fna&_nc_gid=VJgVyYPPA65DNuuP1hSi7Q&_nc_ss=7b2a8&oh=00_AQDYFkXxMmVWb8YK6gQ2Ul-xIGfiOZJak1lnGo9AxcV9JQ&oe=6A4D5687',
+    button_text: 'MUA NGAY',
+    button_link: '/product',
+}
+
 const HeroPage = () => {
-  return (
-    <>
-      <section className="relative min-h-[819px] flex items-center overflow-hidden">
+    const [banner, setBanner] = useState(DEFAULT_BANNER)
+    const [loading, setLoading] = useState(true)
 
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent z-10"></div>
-        <div className="relative z-20 px-margin-desktop max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center">
-          <div className="space-y-6">
-            <h1 className="font-display-lg text-display-lg leading-tight">
-              Khám Phá <span className="text-primary">Thế Giới</span><br />
-              Âm Nhạc!
-            </h1>
-            <p className="text-body-lg font-body-lg text-on-surface-variant max-w-lg">
-              Đa dạng nhạc cụ chất lượng, giá tốt cho mọi đam mê âm nhạc. Từ những chiếc guitar thủ công đến những bộ trống uy lực nhất.
-            </p>
-            <div className="flex flex-wrap gap-4 pt-4">
-              <button className="bg-primary text-on-primary font-bold py-4 px-8 rounded-lg metallic-sheen accent-glow transition-transform active:scale-95">
-                MUA NGAY
-              </button>
-              <button className="border-2 border-primary text-primary font-bold py-4 px-8 rounded-lg hover:bg-primary/10 transition-all">
-                TƯ VẤN NHANH
-              </button>
-            </div>
-          </div>
-          <div className="hidden lg:flex justify-end relative">
-            <div className="relative w-full aspect-square max-w-xl">
-              <img className="w-full h-full object-contain filter drop-shadow-2xl" data-alt="A professional studio shot of a high-end acoustic guitar with a polished wood finish, a sleek digital piano, and a detailed drum kit arranged artistically. The lighting is dramatic and cinematic, highlighting the textures and craftsmanship of the instruments against a deep charcoal grey and amber accented background, reflecting a premium concert hall atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS478cm80URo3sIEymye1_kGk5RI-jiMfYuu8qy8tCGRy7ZxdkJaA7MOedLSQ8zSdq_KIaW7LPgn25pq0O8aNqDyn7fCMtG9dAaU_xekPUUX9MUChanyvP8Cc5ozygkMSHnpp97RrHUd9j3SmMKc53oQ0NY-8tKULN1tEcxSUmPPpT0ut6XcAMY3zkI9SSib1S0wTpSoAY0dH8rSsoc4kxFzpBPRBNXJUJ6m4i8tZJ3iSXtbFZC046N7YoHZlplL0HhbSttVL9-7k" />
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-};
+    useEffect(() => {
+        clientContentService.getBanners()
+            .then((res) => {
+                const list = res.data ?? res.items ?? res
+                // Lấy banner active đầu tiên (đã sort theo sort_order)
+                const active = Array.isArray(list)
+                    ? list.find((b: any) => b.is_active)
+                    : null
+                if (active) {
+                    setBanner({
+                        title: active.title ?? DEFAULT_BANNER.title,
+                        subtitle: active.subtitle ?? DEFAULT_BANNER.subtitle,
+                        image: active.image ?? DEFAULT_BANNER.image,
+                        button_text: active.button_text ?? DEFAULT_BANNER.button_text,
+                        button_link: active.button_link ?? DEFAULT_BANNER.button_link,
+                    })
+                }
+            })
+            .catch(() => {})
+            .finally(() => setLoading(false))
+    }, [])
 
-export default HeroPage;
+    if (loading) {
+        return (
+            <section className="hero-section relative min-h-[819px] flex items-center bg-surface-container-low">
+                <div className="px-margin-desktop max-w-container-max mx-auto w-full">
+                    <Skeleton active paragraph={{ rows: 4 }} style={{ maxWidth: 500 }} />
+                </div>
+            </section>
+        )
+    }
+
+    return (
+        <section
+            className="hero-section relative min-h-[819px] flex items-center overflow-hidden"
+            style={{ backgroundImage: `url("${banner.image}")`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        >
+            <div className="absolute inset-0 bg-black/50 z-10" />
+            <div className="relative z-20 px-margin-desktop max-w-container-max mx-auto w-full">
+                <div className="space-y-6 max-w-2xl">
+                    <h1 className="font-display-lg text-white text-display-lg leading-tight drop-shadow-lg">
+                        {banner.title.includes('Thế Giới') ? (
+                            <>
+                                {banner.title.split('Thế Giới')[0]}
+                                <span className="text-primary font-bold">Thế Giới</span>
+                                {banner.title.split('Thế Giới')[1]}
+                            </>
+                        ) : banner.title}
+                    </h1>
+                    <p className="text-body-lg text-white/90 font-medium max-w-lg drop-shadow-md">
+                        {banner.subtitle}
+                    </p>
+                    <div className="flex flex-wrap gap-4 pt-4">
+                        <Link href={banner.button_link || '/product'}>
+                            <Button
+                                type="primary"
+                                size="large"
+                                className="metallic-sheen accent-glow"
+                                style={{ height: 52, padding: '0 32px', fontWeight: 800, fontSize: 16 }}
+                            >
+                                {banner.button_text || 'MUA NGAY'}
+                            </Button>
+                        </Link>
+                        <Link href="/contact">
+                            <Button
+                                size="large"
+                                style={{
+                                    height: 52, padding: '0 32px',
+                                    fontWeight: 800, fontSize: 16,
+                                    borderWidth: 2, borderColor: '#fff',
+                                    background: 'transparent', color: '#fff',
+                                }}
+                            >
+                                TƯ VẤN NHANH
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}
+
+export default HeroPage

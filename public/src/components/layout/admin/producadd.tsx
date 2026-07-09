@@ -115,11 +115,11 @@ const ProductFormPage = () => {
                 });
 
                 setFileList(
-                    (data.images ?? []).map((url: string, index: number) => ({
-                        uid: String(index),
-                        name: `image-${index}`,
+                    (data.images ?? []).map((image, index: number) => ({
+                        uid: String(image.id ?? index),
+                        name: `image-${image.id ?? index}`,
                         status: 'done',
-                        url,
+                        url: image.image_url,
                     }))
                 );
 

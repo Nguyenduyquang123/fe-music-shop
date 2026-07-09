@@ -11,6 +11,7 @@ declare module "next-auth" {
 
         user: {
             role: string;
+            avatar?: string;
         } & DefaultSession["user"];
     }
 
@@ -21,6 +22,8 @@ declare module "next-auth" {
         refreshToken: string;
 
         role: string;
+
+        avatar?: string;
     }
 
 }
@@ -34,6 +37,8 @@ declare module "next-auth/jwt" {
         refreshToken: string;
 
         role: string;
+
+        avatar?: string;
     }
 
 }

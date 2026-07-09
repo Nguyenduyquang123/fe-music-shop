@@ -2,16 +2,17 @@ import { sendRequest } from "@/public/src/library/api";
 
 export const productService = {
 
-    getProducts() {
-        return sendRequest({
-            url: "/api/auth/products",
-            method: "GET",
-        });
-    },
+  
+    getProducts(page = 1) {
+    return sendRequest({
+        url: `/api/auth/products?page=${page}`,
+        method: "GET",
+    });
+},
 
-    getProduct(id: number) {
+    getProduct(id: number, isAdmin: boolean = true) {
         return sendRequest({
-            url: `/api/auth/products/${id}`,
+            url: `/api/auth/products/${id}${isAdmin ? '?mode=admin' : ''}`,
             method: "GET",
         });
     },

@@ -70,7 +70,7 @@ async authorize(credentials, request) {
         token.email = user.email;
 
         token.role = user.role;
-        token.avatar = user.avatar;
+        token.avatar = user.avatar ;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
       }

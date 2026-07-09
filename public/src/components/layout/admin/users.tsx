@@ -24,7 +24,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { userService } from '@/public/src/services/user.service';
 
 interface UserItem {
-    id: string;
+    id: number;
     full_name: string;
     email: string;
     phone: string;
@@ -290,7 +290,7 @@ const Users = () => {
             />
 
             <Table
-                rowKey="_id"
+                rowKey="id"
                 columns={columns}
                 dataSource={filteredUsers}
                 loading={loading}

@@ -34,7 +34,7 @@ const NavigationPage = () => {
           <Link
             key={item.href}
             href={item.href}
-            className={`relative py-2 transition-colors ${pathname === item.href
+            className={`relative font-medium  py-2 transition-colors ${pathname === item.href
                 ? "text-primary"
                 : "text-on-surface-variant hover:text-primary"
               }`}

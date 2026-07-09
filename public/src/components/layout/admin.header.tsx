@@ -76,28 +76,29 @@ const AdminHeader = (props: any) => {
                 }}
             />
 
-            <Dropdown menu={{ items }} trigger={['click']} placement="bottomRight"
-
-                onClick={(e) => e.preventDefault()}
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    color: 'unset',
-                    marginRight: 24,
-                    padding: '6px 12px',
-                    borderRadius: 8,
-                    cursor: 'pointer',
-                }}
+            <Dropdown
+                menu={{ items }}
+                trigger={['click']}
+                placement="bottomRight"
             >
-                <Space size={10}>
+                {/* Di chuyển style vào đây hoặc bọc bằng thẻ div */}
+                <Space
+                    size={10}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: 'unset',
+                        marginRight: 24,
+                        padding: '6px 12px',
+                        borderRadius: 8,
+                        cursor: 'pointer',
+                    }}
+                >
                     <Avatar
-
                         size={52}
                         src={avatarUrl ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${avatarUrl}` : undefined}
-
                     >
-
-
+                        {initials}
                     </Avatar>
                     <span style={{ lineHeight: 1.2 }}>
                         <div style={{ fontSize: 13, color: '#8c8c8c' }}>Chào,</div>
@@ -105,7 +106,6 @@ const AdminHeader = (props: any) => {
                     </span>
                     <DownOutlined style={{ fontSize: 11, color: '#8c8c8c' }} />
                 </Space>
-
             </Dropdown>
         </Header>
     );

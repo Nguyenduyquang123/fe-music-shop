@@ -13,6 +13,11 @@ const buildQuery = (params?: ProductQuery): string => {
 }
 
 export const clientProductService = {
+    getAll() {
+        return sendRequest({
+            url: "/api/products",
+        })
+    },
     getProducts(params?: ProductQuery) {
         return sendRequest({
             url: `/api/products${buildQuery(params)}`,

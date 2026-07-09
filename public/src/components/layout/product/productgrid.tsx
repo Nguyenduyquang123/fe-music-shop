@@ -76,11 +76,11 @@ const ProductGrid = ({ products, loading }: Props) => {
             href={`/product/${product.slug}-${product.id}`}
             className="group bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/10 product-card-glow flex flex-col"
           >
-            <div className="relative aspect-square overflow-hidden bg-[#1E1E1E]">
+            <div className="relative aspect-square overflow-hidden ">
               <img
                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${product.thumbnail}`}
                 alt={product.name}
-                className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-500"
+                className="w-full h-full object-contain p-1 group-hover:scale-110 transition-transform duration-500"
               />
               {badge && (
                 <span className={`absolute top-4 left-4 text-label-sm font-label-sm px-3 py-1 rounded-full shadow-lg ${badge.cls}`}>

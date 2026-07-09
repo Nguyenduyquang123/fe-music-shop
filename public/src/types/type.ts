@@ -10,7 +10,7 @@ export interface Product {
     category: Category;
     short_description: string;
     description: string;
-    images: string[];
+    images: { id: number; image_url: string }[];
     thumbnail: string;
     specifications: { name: string; value: string }[];
     is_active?: boolean | number;
